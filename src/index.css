@@ -1,0 +1,133 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Noto+Sans+Georgian:wght@100..900&display=swap');
+/* @tailwind base; */
+@tailwind components;
+@tailwind utilities;
+
+
+
+
+.inter {
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 600;
+  font-style: normal;
+  font-variation-settings: "slnt" 0;
+}
+.noto_georgian{
+  font-family: "Noto Sans Georgian", sans-serif;
+}
+
+.rotated-image {
+  transform: rotate(49deg);
+  /* Rotate the image by 49 degrees */
+}
+
+.rotate-favorite {
+  transform: rotate(45deg);
+}
+
+/* Width */
+body::-webkit-scrollbar {
+  width: 2px;
+}
+
+/* Track */
+body::-webkit-scrollbar-track {
+  background: #1B2531;
+}
+
+
+
+/* Handle */
+body::-webkit-scrollbar-thumb {
+  background: #1B2531;
+}
+
+/* Handle on hover */
+body::-webkit-scrollbar-thumb:hover {
+  background: #1B2531;
+}
+
+.history::-webkit-scrollbar,
+.import_scroll::-webkit-scrollbar {
+  width: 0px;
+}
+
+/* Track */
+.history::-webkit-scrollbar-track,
+.import_scroll::-webkit-scrollbar-track {
+  background: #1B2531;
+}
+
+/* Handle */
+.history::-webkit-scrollbar-thumb,
+.import_scroll::-webkit-scrollbar-thumb {
+  background: #1B2531;
+}
+
+/* Handle on hover */
+.history::-webkit-scrollbar-thumb:hover,
+.import_scroll::-webkit-scrollbar-thumb:hover {
+  background: #1B2531;
+}
+
+
+.accountSwitch:hover .circle {
+  transform: rotate(180deg);
+  transition: transform 0.5s ease-in-out;
+}
+
+.transition {
+  transition: bottom 1s ease-in-out;
+  background-color: rgb(36, 36, 36);
+  transform: translate(-50%, 0);
+  left: 50%;
+}
+
+.pricing:hover {
+  bottom: 0;
+  transform: translateY(-20px);
+}
+
+@layer utilities {
+  .indent-custom {
+    text-indent: 1rem;
+    /* Custom indentation value */
+  }
+}
+
+.ant-notification-notice-message {
+  font-family: 'Roboto, noto sans georgian' !important;
+}
+
+.ant-notification-notice-description {
+  font-family: 'Roboto, noto sans georgian' !important;
+}
+
+
+.mapboxgl-map .mapboxgl-popup-content {
+  padding: 10px;
+  max-width: 180px;
+  border-radius: 12px;
+  background-color: #1c252e;
+  color: #ffffff;
+  box-shadow: 0 20px 40px -4px #00000029;
+}
+
+.mapboxgl-popup-anchor-top .mapboxgl-popup-tip {
+  transform: translateY(1px);
+  border-bottom-color: #1c252e !important;
+}
+
+.mapboxgl-popup-close-button{
+  top: 3px !important;
+  right: 5px !important;
+  width: 24px;
+  height: 24px;
+  opacity: .48;
+  font-size: 25px;
+  border-radius: 50%;
+  color: "#919eab";
+  transition: opacity .2s linear 0s;
+}
+

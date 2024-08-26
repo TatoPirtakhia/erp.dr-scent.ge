@@ -1,0 +1,16 @@
+{
+    "short_name": "ERP DR.Scent",
+    "name": "Dr. Scent Web",
+    "icons": [
+      {
+        "src": "/drScent.png",
+        "sizes": "256x256",
+        "type": "image/png"
+      }
+    ],
+    "start_url": "/",
+    "display": "standalone",
+    "orientation": "portrait",
+    "theme_color": "transparent",
+    "background_color": "hsl(215, 100%, 98%)"
+  }
