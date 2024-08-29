@@ -57,6 +57,9 @@ const CategoryPage = () => {
     const selectedIds = selectedRows.map((item) => item.id);
     dispatch(delete_category(selectedIds)).then((response) => {
       if (!response.error) {
+        setCategories((prevCategories) =>
+          prevCategories.filter((cat) => !selectedIds.includes(cat.id))
+        );
         setFilteredCategories((prevCategories) =>
           prevCategories.filter((cat) => !selectedIds.includes(cat.id))
         );
@@ -69,6 +72,9 @@ const CategoryPage = () => {
     const id = [row.id];
     dispatch(delete_category(id)).then((response) => {
       if (!response.error) {
+        setCategories((prevCategories) =>
+          prevCategories.filter((cat) => !selectedIds.includes(cat.id))
+        );
         setFilteredCategories((prevCategories) =>
           prevCategories.filter((item) => item.id !== id[0])
         );
@@ -129,7 +135,8 @@ const CategoryPage = () => {
       icon: <DeleteOutlined />,
     },
   ];
-
+  console.log(categories);
+  console.log(filteredCategories);
   const columns = [
     {
       title: getTranslation("sidenav.products.category.table_category_name"),
@@ -209,7 +216,10 @@ const CategoryPage = () => {
       </div>
       {isAdding && (
         <AddCategory
-          onSubmit={(Cat) => setFilteredCategories((prev) => [Cat, ...prev])}
+          onSubmit={(newCategory) => {
+            setCategories((prev) => [newCategory, ...prev]);
+            setFilteredCategories((prev) => [newCategory, ...prev]);
+          }}
           close={() => setIsAdding(false)}
         />
       )}
@@ -220,6 +230,11 @@ const CategoryPage = () => {
           close={() => setIsEditing(false)}
           onSubmit={(updatedCategory) => {
             setFilteredCategories((prev) =>
+              prev.map((item) =>
+                item.id === updatedCategory.id ? updatedCategory : item
+              )
+            );
+            setCategories((prev) =>
               prev.map((item) =>
                 item.id === updatedCategory.id ? updatedCategory : item
               )
