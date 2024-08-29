@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux";
 import { edit_category } from "../../../../store/slices/CategorySlice";
 import TextArea from "antd/es/input/TextArea";
 const EditCategory = (props) => {
-  const { close, selectedItem } = props;
+  const { close, selectedItem, onSubmit } = props;
   const dispatch = useDispatch();
   const [form] = Form.useForm();
   const onFinish = async () => {
@@ -19,6 +19,7 @@ const EditCategory = (props) => {
       };
       dispatch(edit_category(data)).then((response) => {
         if (!response.error) {
+          onSubmit(data);
           close();
         }
       });

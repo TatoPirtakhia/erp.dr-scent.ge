@@ -8,15 +8,15 @@ import TextArea from "antd/es/input/TextArea";
 
 const AddCategory = (props) => {
   const dispatch = useDispatch();
-  const { close } = props;
+  const { close, onSubmit } = props;
   const [form] = Form.useForm();
 
   const onFinish = async () => {
     try {
       const values = await form.validateFields();
-      const { name, description } = values;
-      dispatch(add_category({ name, description })).then((response) => {
+      dispatch(add_category(values)).then((response) => {
         if (!response.error) {
+          onSubmit(response.payload);
           close();
         }
       });

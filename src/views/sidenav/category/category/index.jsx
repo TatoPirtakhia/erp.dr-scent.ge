@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { Card, Table, Input, Button, Divider, Empty } from "antd";
 import { SearchOutlined, PlusCircleOutlined } from "@ant-design/icons";
 import { getTranslation } from "../../../../lang/translationUtils";
@@ -6,12 +6,15 @@ import {
   delete_category,
   get_category,
 } from "../../../../store/slices/CategorySlice";
+import { MessageBoxContext } from "../../../../context/MessageBoxContext";
+
 import { useDispatch } from "react-redux";
-import AddCategory from "./add_category";
 import EllipsisDropdown from "../../../../components/shared-components/EllipsisDropdown";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import EditCategory from "./edit_category";
+import AddCategory from "./add_category";
 const CategoryPage = () => {
+  const { mb } = useContext(MessageBoxContext);
   const dispatch = useDispatch();
   const [isAdding, setIsAdding] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
@@ -31,7 +34,7 @@ const CategoryPage = () => {
       });
     };
     fetchCategories();
-  }, [dispatch]);
+  }, []);
   const handleEditing = (row) => {
     setIsEditing(true);
     setSelectedItem(row);
@@ -50,9 +53,10 @@ const CategoryPage = () => {
     const selectedIds = selectedRows.map((item) => item.id);
     dispatch(delete_category(selectedIds)).then((response) => {
       if (!response.error) {
-        setCategories(
-          categories.filter((cat) => !selectedRowKeys.includes(cat.key))
+        setCategories((prevCategories) =>
+          prevCategories.filter((cat) => !selectedIds.includes(cat.id))
         );
+        setSelectedRows([]);
         setSelectedRowKeys([]);
       }
     });
@@ -61,12 +65,52 @@ const CategoryPage = () => {
     const id = [row.id];
     dispatch(delete_category(id)).then((response) => {
       if (!response.error) {
+        setCategories((prevCategories) =>
+          prevCategories.filter((item) => item.id !== id[0])
+        );
+        setSelectedRowKeys((prev) => prev.filter((key) => key !== id));
+
         close();
       } else {
         console.error("Error deleting category:", response.error);
       }
     });
   };
+  const deleteMulitpleModal = () => {
+    mb({
+      //! Change Translations
+      okText: getTranslation("sidenav.settings.unit.deleteButton"),
+      title: getTranslation("sidenav.products.category.deleteTitle"),
+      cancelText: getTranslation("sidenav.products.category.Cancel"),
+      text: (
+        <>
+          {getTranslation("sidenav.settings.unit.deleteText")}
+          {" - "}
+          <strong style={{ color: "#FF6B72" }}>{` ${
+            selectedRows.length
+          }  ${getTranslation("sidenav.service.category")} `}</strong>
+        </>
+      ),
+      okFunction: () => handleRemove(),
+    });
+  };
+  const openModal = (row) => {
+    mb({
+      //! Change Translations
+      okText: getTranslation("sidenav.settings.unit.deleteButton"),
+      title: getTranslation("sidenav.products.category.deleteTitle"),
+      cancelText: getTranslation("sidenav.products.category.Cancel"),
+      text: (
+        <>
+          {getTranslation("sidenav.settings.unit.deleteText")}
+          {" - "}
+          <strong style={{ color: "#FF6B72" }}>{row.name}</strong>
+        </>
+      ),
+      okFunction: () => handleSingleRemove(row),
+    });
+  };
+
   const dropdownMenu = (row) => [
     {
       key: "1",
@@ -77,7 +121,7 @@ const CategoryPage = () => {
     {
       key: "2",
       label: getTranslation("sidenav.settings.unit.Delete"),
-      onClick: () => handleSingleRemove(row),
+      onClick: () => openModal(row),
       icon: <DeleteOutlined />,
     },
   ];
@@ -88,6 +132,7 @@ const CategoryPage = () => {
       dataIndex: "name",
       render: (text) => <a>{text}</a>,
       align: "center",
+      key: "name",
     },
     {
       title: getTranslation("sidenav.products.category.table_description"),
@@ -109,6 +154,7 @@ const CategoryPage = () => {
       title: "",
       width: 5,
       dataIndex: "actions",
+      key: "actions",
       render: (_, elm) => (
         <div className="text-right">
           <EllipsisDropdown menu={dropdownMenu(elm)} />
@@ -133,6 +179,7 @@ const CategoryPage = () => {
           onChange={onValueChange}
           value={value}
         />
+
         {selectedRowKeys.length > 0 ? (
           <Button
             type="primary"
@@ -143,7 +190,7 @@ const CategoryPage = () => {
               padding: "4px 8px",
               fontSize: "15px",
             }}
-            onClick={handleRemove}
+            onClick={deleteMulitpleModal}
           >
             delete {selectedRows.length} Unit
           </Button>
@@ -157,13 +204,27 @@ const CategoryPage = () => {
           </Button>
         )}
       </div>
-      {isAdding && <AddCategory close={() => setIsAdding(false)} />}
+      {isAdding && (
+        <AddCategory
+          onSubmit={(Cat) => setCategories((prev) => [Cat, ...prev])}
+          close={() => setIsAdding(false)}
+        />
+      )}
+
       {isEditing && (
         <EditCategory
           selectedItem={selectedItem}
           close={() => setIsEditing(false)}
+          onSubmit={(updatedCategory) => {
+            setCategories((prev) =>
+              prev.map((item) =>
+                item.id === updatedCategory.id ? updatedCategory : item
+              )
+            );
+          }}
         />
       )}
+
       <div className="table-responsive">
         <Divider />
         <Table
