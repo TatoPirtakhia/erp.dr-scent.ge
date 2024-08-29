@@ -19,6 +19,7 @@ const CategoryPage = () => {
   const [isAdding, setIsAdding] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [categories, setCategories] = useState([]);
+  const [filteredCategories, setFilteredCategories] = useState([]);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [selectedRows, setSelectedRows] = useState([]);
   const [selectedItem, setSelectedItem] = useState("");
@@ -28,6 +29,7 @@ const CategoryPage = () => {
       dispatch(get_category()).then((response) => {
         if (response.payload) {
           setCategories(response.payload);
+          setFilteredCategories(response.payload);
         } else {
           console.error("Failed to load categories ");
         }
@@ -40,20 +42,22 @@ const CategoryPage = () => {
     setSelectedItem(row);
   };
   const onValueChange = (e) => {
-    setValue(e.target.value.toLowerCase());
-    if (value.length === 0) {
-      setCategories(categories);
+    const inputValue = e.target.value.toLowerCase();
+    setValue(inputValue);
+    if (!inputValue) {
+      setFilteredCategories(categories);
+    } else {
+      const searchCategory = categories.filter((item) =>
+        item.name.toLowerCase().includes(inputValue)
+      );
+      setFilteredCategories(searchCategory);
     }
-    const searchCategory = categories.filter((item) =>
-      item.name.toLowerCase().includes(value)
-    );
-    setCategories(searchCategory);
   };
   const handleRemove = () => {
     const selectedIds = selectedRows.map((item) => item.id);
     dispatch(delete_category(selectedIds)).then((response) => {
       if (!response.error) {
-        setCategories((prevCategories) =>
+        setFilteredCategories((prevCategories) =>
           prevCategories.filter((cat) => !selectedIds.includes(cat.id))
         );
         setSelectedRows([]);
@@ -65,7 +69,7 @@ const CategoryPage = () => {
     const id = [row.id];
     dispatch(delete_category(id)).then((response) => {
       if (!response.error) {
-        setCategories((prevCategories) =>
+        setFilteredCategories((prevCategories) =>
           prevCategories.filter((item) => item.id !== id[0])
         );
         setSelectedRowKeys((prev) => prev.filter((key) => key !== id));
@@ -79,7 +83,7 @@ const CategoryPage = () => {
   const deleteMulitpleModal = () => {
     mb({
       //! Change Translations
-      okText: getTranslation("sidenav.settings.unit.deleteButton"),
+      okText: getTranslation("sidenav.products.category.Delete"),
       title: getTranslation("sidenav.products.category.deleteTitle"),
       cancelText: getTranslation("sidenav.products.category.Cancel"),
       text: (
@@ -177,7 +181,6 @@ const CategoryPage = () => {
           placeholder={getTranslation("sidenav.products.category_search")}
           prefix={<SearchOutlined />}
           onChange={onValueChange}
-          value={value}
         />
 
         {selectedRowKeys.length > 0 ? (
@@ -206,7 +209,7 @@ const CategoryPage = () => {
       </div>
       {isAdding && (
         <AddCategory
-          onSubmit={(Cat) => setCategories((prev) => [Cat, ...prev])}
+          onSubmit={(Cat) => setFilteredCategories((prev) => [Cat, ...prev])}
           close={() => setIsAdding(false)}
         />
       )}
@@ -216,7 +219,7 @@ const CategoryPage = () => {
           selectedItem={selectedItem}
           close={() => setIsEditing(false)}
           onSubmit={(updatedCategory) => {
-            setCategories((prev) =>
+            setFilteredCategories((prev) =>
               prev.map((item) =>
                 item.id === updatedCategory.id ? updatedCategory : item
               )
@@ -247,7 +250,7 @@ const CategoryPage = () => {
           className="text-center"
           pagination={false}
           columns={columns}
-          dataSource={categories}
+          dataSource={filteredCategories}
         />
       </div>
     </Card>
