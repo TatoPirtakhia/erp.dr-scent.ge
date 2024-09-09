@@ -22,6 +22,7 @@ UnitService.edit_unit = function (data) {
     data
   })
 }
+
 UnitService.delete_unit = function (data) {
   return fetch({
     url: `/api/unit`,

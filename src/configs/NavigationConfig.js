@@ -1,7 +1,8 @@
 import {
   DashboardOutlined,
   ProductOutlined,
-  SettingOutlined
+  SettingOutlined,
+  UserOutlined
 } from "@ant-design/icons"
 
 const dashBoardNavTree = [
@@ -48,6 +49,17 @@ const users = [
         submenu: [],
       },
     ],
+  },
+
+  {
+    key: "clients",
+    path: `/clients`,
+    title: "sidenav.clients",
+    icon: UserOutlined,
+    breadcrumb: false,
+    user_type: [1],
+    disabled: false,
+    submenu: [],
   },
   {
     key: "settings",
