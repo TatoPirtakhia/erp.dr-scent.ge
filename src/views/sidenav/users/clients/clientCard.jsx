@@ -106,7 +106,7 @@ const ClientCard = ({ client, onEdit, onAddBranch, onAddressShow, onShowAllPinsO
 
             {client.note ? <Meta className='mt-2' title={getTranslation("sidenav.admins.note")} description={client.note} /> : null}
             <div className='flex flex-col gap-3'>
-                <Button className='mt-3' icon={<BankOutlined />} onClick={() => onAddressShow(client.expandableData)}>{getTranslation("sidenav.admins.branch_address")}</Button>
+                <Button className='mt-3' icon={<BankOutlined />} onClick={() => onAddressShow(client)}>{getTranslation("sidenav.admins.branch_address")}</Button>
                 <Button className='' icon={<EnvironmentOutlined />} onClick={() => onShowAllPinsOnMap(client.expandableData)}>{getTranslation("sidenav.admins.branches_on_map")}</Button>
             </div>
         </Card>

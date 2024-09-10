@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Card, Drawer, Dropdown } from 'antd';
+import { Button, Card, Carousel, Drawer, Dropdown } from 'antd';
 import {
     EditOutlined,
     AimOutlined,
@@ -9,6 +9,7 @@ import {
 import { getTranslation } from '../../../../lang/translationUtils';
 import dayjs from 'dayjs';
 import { useSelector } from 'react-redux';
+import { API_BASE_URL } from '../../../../constants/ApiConstant';
 const CardDropdown = ({ items }) => {
 
     return (
@@ -22,7 +23,7 @@ const CardDropdown = ({ items }) => {
 
 const AddressList = (props) => {
     const settings = useSelector((state) => state.systemInfo.settings);
-    const { open, close, data, onEdit, onViewLocation } = props;
+    const { open, close, data, onEdit, onViewLocation, clientId } = props;
     const importExport = (item) => {
         return (
             [
@@ -36,6 +37,7 @@ const AddressList = (props) => {
             ]
         )
     }
+    console.log(data)
     return (
         <>
             <Drawer
@@ -52,6 +54,22 @@ const AddressList = (props) => {
                         title={item.city_name}
                         className="client-card"
                         style={{ marginBottom: 16 }}
+                        cover={
+                            <div className='mt-3  rounded-[12px]'>
+
+                                <Carousel effect="scrollx" dotPosition="bottom" className='min-h-[170px]' autoplay>
+                                    {item.images.length > 0 && item.images.map((branch, index) => (
+                                        <div key={index}>
+                                            <img
+                                                alt={`slider-image-${index}`}
+                                                src={`${API_BASE_URL}images/clients/images/user_${clientId}/branch_${item.id}/${branch.image}`}
+                                                style={{ width: '100%', height: '140px', objectFit: 'contain' }}
+                                            />
+                                        </div>
+                                    ))}
+                                </Carousel>
+                            </div>
+                        }
                         extra={<CardDropdown items={importExport(item)} />} >
                         <p className='mb-0 '>
                             <strong>

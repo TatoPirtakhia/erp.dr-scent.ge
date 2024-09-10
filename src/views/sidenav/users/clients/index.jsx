@@ -83,6 +83,7 @@ const ClientsList = () => {
 
   const [setMobileAddressOpen, setSetMobileAddressOpen] = useState(false);
   const [expandableData, setExpandableData] = useState([]);
+  const [clientId, setClientId] = useState(null);
 
   const [markersData, setMarkersData] = useState([]);
 
@@ -280,7 +281,8 @@ const ClientsList = () => {
 
   const showMobileAddress = (data) => {
     setSetMobileAddressOpen(true);
-    setExpandableData(data);
+    setClientId(data.id)
+    setExpandableData(data.expandableData);
   };
 
   const onViewLocation = (data) => {
@@ -614,7 +616,6 @@ const ClientsList = () => {
     setSearchValue(value);
     setFilterData((prev) => ({ ...prev, search: value }));
   };
-  //! NOTE:: Get the id of selected branch and pass to AddBranch Component
   return (
     <>
       <CustomHelmet title="sidenav.client.tab" />
@@ -809,6 +810,7 @@ const ClientsList = () => {
         )}
         {!setMobileAddressOpen ? null : (
           <AddressList
+            clientId={clientId}
             data={expandableData}
             onEdit={showBranchProfile}
             onViewLocation={onViewLocation}
