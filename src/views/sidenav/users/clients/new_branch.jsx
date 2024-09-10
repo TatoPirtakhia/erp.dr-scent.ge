@@ -56,6 +56,7 @@ const NewBranch = (props) => {
   const [admins, setAdmins] = useState([]);
   const [selectedAdmins, setSelectedAdmins] = useState([]);
   const [companyTypeOptions, setCompanyTypeOptions] = useState([]);
+  const [submitted, hasSubmitted] = useState(false);
   const [form] = Form.useForm();
   const dispatch = useDispatch();
   //! To manage which tab is active
@@ -196,6 +197,7 @@ const NewBranch = (props) => {
             description: getTranslation(response.payload.message),
           });
           setActiveTabKey("2");
+          hasSubmitted(true);
           setNewbranch(response.payload.data.expandableData[0].id);
           onSubmit({
             ...response.payload.data,
@@ -263,11 +265,23 @@ const NewBranch = (props) => {
     }
   };
   // Tab items
-  const items = [
-    {
-      key: "1",
-      label: getTranslation("sidenav.admins.branches_tab_info"),
-      children: (
+
+  return (
+    <Modal
+      maskClosable={false}
+      open={visible}
+      width={900}
+      onCancel={close}
+      footer={null}
+      title={`${getTranslation("sidenav.client.new_branch")}`}
+    >
+      {/* <Tabs activeKey={activeTabKey} onChange={setActiveTabKey} items={items} /> */}
+      {submitted ? (
+        <ImageUpload
+          onClose={close}
+          data={{ user_id: data.id, branch_id: newBranch }}
+        />
+      ) : (
         <Form
           name="basicInformation"
           layout="vertical"
@@ -480,29 +494,7 @@ const NewBranch = (props) => {
             </Button>
           </Flex>
         </Form>
-      ),
-    },
-    {
-      key: "2",
-      label: getTranslation("sidenav.admins.branches_tab_image"),
-      children: (
-        <ImageUpload
-          onClose={close}
-          data={{ user_id: data.id, branch_id: newBranch }}
-        />
-      ),
-    },
-  ];
-  return (
-    <Modal
-      maskClosable={false}
-      open={visible}
-      width={900}
-      onCancel={close}
-      footer={null}
-      title={`${getTranslation("sidenav.client.new_branch")}`}
-    >
-      <Tabs activeKey={activeTabKey} onChange={setActiveTabKey} items={items} />
+      )}
     </Modal>
   );
 };

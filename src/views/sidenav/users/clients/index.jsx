@@ -281,7 +281,7 @@ const ClientsList = () => {
 
   const showMobileAddress = (data) => {
     setSetMobileAddressOpen(true);
-    setClientId(data.id)
+    setClientId(data.id);
     setExpandableData(data.expandableData);
   };
 
