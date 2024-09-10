@@ -7,4 +7,5 @@ export const DefaultDashboard = () => {
   return <>Dashboard</>;
 };
 
+
 export default DefaultDashboard;
