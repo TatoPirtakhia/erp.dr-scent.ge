@@ -1,5 +1,5 @@
-import React from "react"
-import { AUTH_PREFIX_PATH } from "../configs/AppConfig"
+import React from "react";
+import { AUTH_PREFIX_PATH } from "../configs/AppConfig";
 
 export const publicRoutes = [
   {
@@ -16,19 +16,19 @@ export const publicRoutes = [
       import("../views/auth-views/authentication/forgot-password")
     ),
   },
-]
+];
 
 export const protectedRoutes = [
   {
     key: "dashboard.default",
     path: `/home`,
-    user_type: [1,2],
+    user_type: [1, 2],
     component: React.lazy(() => import("../views/sidenav/dashboards/default")),
   },
   {
     key: "dashboard.products",
     path: `/products`,
-    user_type: [1,2],
+    user_type: [1, 2],
     component: React.lazy(() => import("../views/sidenav/products/products")),
   },
   {
@@ -40,8 +40,13 @@ export const protectedRoutes = [
   {
     key: "dashboard.settings",
     path: `/settings/*`,
-    user_type: [1,2],
+    user_type: [1, 2],
     component: React.lazy(() => import("../views/sidenav/settings")),
   },
-  
-]
+  {
+    key: "dashboard.category",
+    path: `/category`,
+    user_type: [1, 2],
+    component: React.lazy(() => import("../views/sidenav/category/category")),
+  },
+];
