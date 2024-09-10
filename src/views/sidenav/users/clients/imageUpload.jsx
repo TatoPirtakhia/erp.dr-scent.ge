@@ -14,6 +14,8 @@ const ImageUpload = (props) => {
   const [imageSRC, setImageSRC] = useState(null);
   const [image, setImage] = useState([]);
   const dispatch = useDispatch();
+  
+
   const handleSubmit = async () => {
     try {
       for (const file of image) {

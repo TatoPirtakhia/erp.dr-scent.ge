@@ -13,6 +13,10 @@ const EditBranchImage = (props) => {
   const [imageSRC, setImageSRC] = useState(null);
   const [image, setImage] = useState([]);
   const dispatch = useDispatch();
+  const formattedImage = data.images.map((img) => {
+    imgName: img.image;
+  });
+  console.log(formattedImage);
   console.log(data);
   const handleSubmit = async () => {
     try {
@@ -93,16 +97,16 @@ const EditBranchImage = (props) => {
     }
   };
   useEffect(() => {
-    if (data.image) {
+    // Update image if it already exists on branch
+    if (data.images) {
       try {
-        const fileList = [
-          {
-            uid: 1,
-            name: "image.png",
-            status: "done",
-            url: `${API_BASE_URL}images/clients/images/user_${data.id}/${data.image}`,
-          },
-        ];
+        const fileList = data.images.map((img, index) => ({
+          uid: 1,
+          name: `image_${index}.png`,
+          status: "done",
+          url: `${API_BASE_URL}images/clients/images/user_${data.user_id}/branch_${img.branch_id}/${img.image}`, // Constructing the full URL using branch_id and image properties
+        }));
+
         setFileList(fileList);
       } catch (error) {
         console.error("Error parsing document_images:", error);
