@@ -169,6 +169,7 @@ const AddProduct = (props) => {
     const randomNumber = generateRandomString(13, false, false, true);
     form.setFieldsValue({ secondary_code: randomNumber });
   };
+  console.log(`Add product ${fileList}`);
 
   return (
     <AddOrUpdateLayout

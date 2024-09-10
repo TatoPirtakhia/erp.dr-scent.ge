@@ -15,7 +15,6 @@ const AddUnit = (props) => {
   useEffect(() => {
     inputRef.current && inputRef.current.focus();
   }, []);
-
   const handleSave = async () => {
     if (loading) return;
 
