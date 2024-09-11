@@ -1,26 +1,31 @@
-import { Form, Upload, Button } from "antd";
+import { Form, Upload, Button, Flex, App } from "antd";
 import { useState, useEffect } from "react";
 import { getTranslation } from "../../../../lang/translationUtils";
 import { API_BASE_URL } from "../../../../constants/ApiConstant";
 import resizeImage from "../../../../utils/resizeImage";
 import { useDispatch } from "react-redux";
-import { addBranchImage } from "../../../../store/slices/UsersSlice";
+import {
+  addBranchImage,
+  deleteBranchImage,
+} from "../../../../store/slices/UsersSlice";
 const EditBranchImage = (props) => {
-  const { data } = props;
+  const { notification } = App.useApp();
+  const { data, onClose } = props;
   const [form] = Form.useForm();
+  const [deletedImageId, setDeletedImageId] = useState([]);
+  const [imageIds, setImageIds] = useState([]);
   const [fileList, setFileList] = useState([]);
   const [loading, setLoading] = useState(false);
   const [imageSRC, setImageSRC] = useState(null);
   const [image, setImage] = useState([]);
   const dispatch = useDispatch();
-  const formattedImage = data.images.map((img) => {
-    imgName: img.image;
-  });
-  console.log(formattedImage);
-  console.log(data);
   const handleSubmit = async () => {
     try {
       // ! IF image already exists we want to change it
+      if (imageIds.length > 0) {
+        // Handle modal close on cancel click
+        return handleImageRemoval();
+      }
       //   if (image) {
       //     const formData = new FormData();
       //     formData.append("image", image);
@@ -36,7 +41,6 @@ const EditBranchImage = (props) => {
       for (const file of image) {
         const formData = new FormData();
         formData.append("image", file);
-        console.log(file);
         dispatch(
           addBranchImage({
             formData,
@@ -47,7 +51,10 @@ const EditBranchImage = (props) => {
         )
           .then((response) => {
             if (!response.error) {
-              console.log(" success:", response);
+              notification.success({
+                message: getTranslation("Successfully added an image"),
+                description: getTranslation(response.payload.message),
+              });
             } else {
               console.error(" failed:", response.error);
             }
@@ -97,14 +104,13 @@ const EditBranchImage = (props) => {
     }
   };
   useEffect(() => {
-    // Update image if it already exists on branch
     if (data.images) {
       try {
         const fileList = data.images.map((img, index) => ({
-          uid: 1,
+          uid: img.id,
           name: `image_${index}.png`,
           status: "done",
-          url: `${API_BASE_URL}images/clients/images/user_${data.user_id}/branch_${img.branch_id}/${img.image}`, // Constructing the full URL using branch_id and image properties
+          url: `${API_BASE_URL}images/clients/images/user_${data.user_id}/branch_${img.branch_id}/${img.image}`,
         }));
 
         setFileList(fileList);
@@ -113,6 +119,25 @@ const EditBranchImage = (props) => {
       }
     }
   }, [data]);
+  const onRemove = async (file) => {
+    setImageIds((prev) => [...prev, file.uid]);
+  };
+  const handleImageRemoval = () => {
+    try { 
+      dispatch(deleteBranchImage({ imageIds, user_id: data.user_id }))
+        .then((response) => {
+          notification.success({
+            message: "Image deleted Successfully",
+          });
+          setDeletedImageId(response.meta.arg.imageIds);
+        })
+        .catch((response) => {
+          console.log("Something went wrong with deleting img");
+        });
+    } catch (error) {
+      console.log("Image could not be deleted", error);
+    }
+  };
   return (
     <>
       <Upload
@@ -125,17 +150,18 @@ const EditBranchImage = (props) => {
         fileList={fileList}
         multiple
         onPreview={onPreview}
+        onRemove={onRemove}
       >
-        {fileList.length < 1 && getTranslation("sidenav.product.upload")}
+        {fileList.length < 20 && getTranslation("sidenav.product.upload")}
       </Upload>
-      <Button
-        type="primary"
-        loading={loading}
-        onClick={() => handleSubmit()}
-        style={{ marginTop: 16 }}
-      >
-        {getTranslation("sidenav.product.upload")}
-      </Button>
+      <Flex gap={10} justify="flex-end">
+        <Button onClick={onClose} type="">
+          გაუქმება
+        </Button>
+        <Button type="primary" loading={loading} onClick={handleSubmit}>
+          ჩამახსოვრება
+        </Button>
+      </Flex>
     </>
   );
 };

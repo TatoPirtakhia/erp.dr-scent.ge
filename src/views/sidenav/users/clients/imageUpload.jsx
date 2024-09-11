@@ -102,7 +102,7 @@ const ImageUpload = (props) => {
         multiple
         onPreview={onPreview}
       >
-        {fileList.length < 1 && getTranslation("sidenav.product.upload")}
+        {fileList.length < 20 && getTranslation("sidenav.product.upload")}
       </Upload>
       <Button
         type="primary"

@@ -123,6 +123,18 @@ export const addBranchImage = createAsyncThunk(
     }
   }
 );
+export const deleteBranchImage = createAsyncThunk(
+  "api/branch",
+  async (data, { rejectWithValue }) => {
+    try {
+      const response = await UsersService.deleteBranchImage(data);
+      return response;
+    } catch (err) {
+      return rejectWithValue(err.response?.data?.message || "Error");
+    }
+  }
+);
+
 export const editClient = createAsyncThunk(
   "api/client",
   async (data, { rejectWithValue }) => {

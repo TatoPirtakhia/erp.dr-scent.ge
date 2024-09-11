@@ -459,7 +459,7 @@ const EditBranch = (props) => {
       key: "2",
       label: getTranslation("sidenav.admins.branches_tab_image"),
 
-      children: <EditBranchImage data={data} />,
+      children: <EditBranchImage onClose={close} data={data} />,
     },
   ];
   return (

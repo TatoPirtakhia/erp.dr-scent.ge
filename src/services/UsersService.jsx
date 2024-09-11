@@ -89,6 +89,13 @@ UsersService.editBranchImage = function (data) {
     data,
   });
 };
+UsersService.deleteBranchImage = function (data) {
+  return fetch({
+    url: `/api/branch_images/${data.user_id}`,
+    method: "delete",
+    data: data.imageIds,
+  });
+};
 UsersService.addDocumentImage = function (data) {
   return fetch({
     url: `/api/document/${data.id}`,
