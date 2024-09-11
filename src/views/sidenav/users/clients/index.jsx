@@ -100,6 +100,7 @@ const ClientsList = () => {
   useEffect(() => {
     dispatch(getAllClient(filterData)).then((response) => {
       setUsers(response.payload.data);
+
       setUsersLength(response.payload.totalCount);
     });
   }, [filterData]);
@@ -535,7 +536,7 @@ const ClientsList = () => {
       />
     );
   };
-
+  console.log(users);
   const tableColumns = [
     {
       title: getTranslation("sidenav.client.tableUser"),
@@ -616,6 +617,7 @@ const ClientsList = () => {
     setSearchValue(value);
     setFilterData((prev) => ({ ...prev, search: value }));
   };
+  console.log(users);
   return (
     <>
       <CustomHelmet title="sidenav.client.tab" />
@@ -746,6 +748,43 @@ const ClientsList = () => {
             data={selectedBranch}
             visible={branchProfileVisible}
             close={() => setBranchProfileVisible(false)}
+            onImageEdit={(data) => {
+              setUsers((prevUsers) =>
+                prevUsers.map((user) => {
+                  return {
+                    ...user,
+                    expandableData: user.expandableData.map((branch) =>
+                      branch.id === data.branch_id
+                        ? {
+                            ...branch,
+                            images: [
+                              ...branch.images,
+                              {
+                                id: data.id,
+                                branch_id: data.branch_id,
+                                image: data.image,
+                              },
+                            ],
+                          }
+                        : branch
+                    ),
+                  };
+                })
+              );
+            }}
+            onImageDelete={(deletedImageIds) => {
+              setUsers((prevUsers) =>
+                prevUsers.map((user) => ({
+                  ...user,
+                  expandableData: user.expandableData.map((branch) => ({
+                    ...branch,
+                    images: branch.images.filter(
+                      (image) => !deletedImageIds.includes(image.id)
+                    ),
+                  })),
+                }))
+              );
+            }}
             onSubmit={(data) => {
               setUsers((prevUsers) =>
                 prevUsers.map((user) => ({
@@ -789,6 +828,7 @@ const ClientsList = () => {
         {!newBranch ? null : (
           <NewBranch
             // branchId={selectedBranch.id}
+
             data={selectedUser}
             latitude={mainLocation.latitude}
             longitude={mainLocation.longitude}

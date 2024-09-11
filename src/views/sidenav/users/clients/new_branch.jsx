@@ -61,7 +61,7 @@ const NewBranch = (props) => {
   const dispatch = useDispatch();
   //! To manage which tab is active
   const [activeTabKey, setActiveTabKey] = useState("1");
-
+  console.log(data);
   useEffect(() => {
     dispatch(getCountries()).then((response) => {
       if (!response.error) {

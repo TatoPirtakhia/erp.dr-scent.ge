@@ -10,7 +10,7 @@ import {
 } from "../../../../store/slices/UsersSlice";
 const EditBranchImage = (props) => {
   const { notification } = App.useApp();
-  const { data, onClose } = props;
+  const { data, onClose, onSubmit, onImageEdit, onImageDelete } = props;
   const [form] = Form.useForm();
   const [deletedImageId, setDeletedImageId] = useState([]);
   const [imageIds, setImageIds] = useState([]);
@@ -21,23 +21,9 @@ const EditBranchImage = (props) => {
   const dispatch = useDispatch();
   const handleSubmit = async () => {
     try {
-      // ! IF image already exists we want to change it
       if (imageIds.length > 0) {
-        // Handle modal close on cancel click
-        return handleImageRemoval();
+        handleImageRemoval();
       }
-      //   if (image) {
-      //     const formData = new FormData();
-      //     formData.append("image", image);
-      //     formData.append("old_image", data.image);
-      //     await dispatch(changeClientImage({ formData, id: data.id })).then(
-      //       (res) => {
-      //         if (!res.error) {
-      //           image_name = res.payload.image_name;
-      //         }
-      //       }
-      //     );
-      //   }
       for (const file of image) {
         const formData = new FormData();
         formData.append("image", file);
@@ -51,10 +37,23 @@ const EditBranchImage = (props) => {
         )
           .then((response) => {
             if (!response.error) {
+              console.log({
+                user_id: data.user_id,
+                branch_id: data.id,
+                id: response.payload.id,
+                image: response.payload.image,
+              });
+              onImageEdit({
+                user_id: data.user_id,
+                branch_id: data.id,
+                id: response.payload.id,
+                image: response.payload.image,
+              });
               notification.success({
-                message: getTranslation("Successfully added an image"),
+                message: getTranslation("Done!"),
                 description: getTranslation(response.payload.message),
               });
+              onClose();
             } else {
               console.error(" failed:", response.error);
             }
@@ -88,7 +87,7 @@ const EditBranchImage = (props) => {
   const handleChange = async ({ fileList: newFileList }) => {
     setFileList(newFileList);
     const info = newFileList[newFileList.length - 1];
-    if (!info) return;
+    if (!info);
     if (info && info.status === "uploading") {
       setLoading(true);
       return;
@@ -123,21 +122,25 @@ const EditBranchImage = (props) => {
     setImageIds((prev) => [...prev, file.uid]);
   };
   const handleImageRemoval = () => {
-    try { 
-      dispatch(deleteBranchImage({ imageIds, user_id: data.user_id }))
-        .then((response) => {
-          notification.success({
-            message: "Image deleted Successfully",
-          });
-          setDeletedImageId(response.meta.arg.imageIds);
-        })
-        .catch((response) => {
-          console.log("Something went wrong with deleting img");
-        });
+    try {
+      console.log({ imageIds, user_id: data.user_id });
+      dispatch(deleteBranchImage({ imageIds, user_id: data.user_id })).then(
+        (response) => {
+          if (!response.error) {
+            onImageDelete(imageIds);
+            onClose();
+            notification.success({
+              message: getTranslation("Done!"),
+              description: getTranslation(response.payload.message),
+            });
+          }
+        }
+      );
     } catch (error) {
       console.log("Image could not be deleted", error);
     }
   };
+  console.log(data);
   return (
     <>
       <Upload
@@ -158,7 +161,7 @@ const EditBranchImage = (props) => {
         <Button onClick={onClose} type="">
           გაუქმება
         </Button>
-        <Button type="primary" loading={loading} onClick={handleSubmit}>
+        <Button type="primary" onClick={handleSubmit}>
           ჩამახსოვრება
         </Button>
       </Flex>
