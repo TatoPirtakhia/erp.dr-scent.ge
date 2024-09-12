@@ -23,9 +23,8 @@ const EditBranchImage = (props) => {
     try {
       if (imageIds.length > 0) {
         handleImageRemoval();
-        handleImageRemoval();
       }
-      console.log(image)
+      console.log(image);
       for (const file of image) {
         const formData = new FormData();
         formData.append("image", file);
@@ -90,7 +89,6 @@ const EditBranchImage = (props) => {
   const handleChange = async ({ fileList: newFileList }) => {
     setFileList(newFileList);
     const info = newFileList[newFileList.length - 1];
-    if (!info);
     if (!info);
     if (info && info.status === "uploading") {
       setLoading(true);
@@ -165,7 +163,6 @@ const EditBranchImage = (props) => {
         <Button onClick={onClose} type="">
           გაუქმება
         </Button>
-        <Button type="primary" onClick={handleSubmit}>
         <Button type="primary" onClick={handleSubmit}>
           ჩამახსოვრება
         </Button>
