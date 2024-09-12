@@ -60,8 +60,6 @@ const NewBranch = (props) => {
   const [form] = Form.useForm();
   const dispatch = useDispatch();
   //! To manage which tab is active
-  const [activeTabKey, setActiveTabKey] = useState("1");
-
   useEffect(() => {
     dispatch(getCountries()).then((response) => {
       if (!response.error) {
@@ -196,7 +194,6 @@ const NewBranch = (props) => {
             message: getTranslation("Done!"),
             description: getTranslation(response.payload.message),
           });
-          setActiveTabKey("2");
           hasSubmitted(true);
           setNewbranch(response.payload.data.expandableData[0].id);
           onSubmit({
@@ -275,7 +272,6 @@ const NewBranch = (props) => {
       footer={null}
       title={`${getTranslation("sidenav.client.new_branch")}`}
     >
-      {/* <Tabs activeKey={activeTabKey} onChange={setActiveTabKey} items={items} /> */}
       {submitted ? (
         <ImageUpload
           onClose={close}
@@ -500,10 +496,3 @@ const NewBranch = (props) => {
 };
 
 export default NewBranch;
-
-// aq gaagrdzele axla shenaxvis dros arunda daixuros modali da mopmdevno tabi unda gaixsnas da im mopsuli infos micem da sheinaxav fotoebs an gamortavs da vso potoebs aratviertavs
-
-// aq shignit tviton filialis redaqtoirebashic unda daamato eg tabi da aq pirdapir gaq vinaa da ra filiali gaq propsebshi gaatan infos da amoigeb mere iq
-
-// ecade xvalamde  qna   ok ?
-// ok

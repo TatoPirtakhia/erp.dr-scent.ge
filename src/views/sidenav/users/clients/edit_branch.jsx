@@ -37,7 +37,16 @@ import AddOrUpdateLayout from "../../../../components/shared-components/add_or_e
 import EditBranchImage from "./editBranchImage";
 const EditBranch = (props) => {
   const { notification } = App.useApp();
-  const { visible, close, onSubmit, data, latitude, longitude } = props;
+  const {
+    visible,
+    close,
+    onSubmit,
+    data,
+    latitude,
+    longitude,
+    onImageEdit,
+    onImageDelete,
+  } = props;
   const [LocationVisible, setLocationVisible] = useState(false);
   const [location, setLocation] = useState({
     latitude: data.latitude,
@@ -459,7 +468,15 @@ const EditBranch = (props) => {
       key: "2",
       label: getTranslation("sidenav.admins.branches_tab_image"),
 
-      children: <EditBranchImage onClose={close} data={data} />,
+      children: (
+        <EditBranchImage
+          onImageEdit={onImageEdit}
+          onImageDelete={onImageDelete}
+          onSubmit={onSubmit}
+          onClose={close}
+          data={data}
+        />
+      ),
     },
   ];
   return (

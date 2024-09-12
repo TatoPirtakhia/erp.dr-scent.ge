@@ -14,7 +14,6 @@ const ImageUpload = (props) => {
   const [imageSRC, setImageSRC] = useState(null);
   const [image, setImage] = useState([]);
   const dispatch = useDispatch();
-  
 
   const handleSubmit = async () => {
     try {
@@ -36,7 +35,6 @@ const ImageUpload = (props) => {
                   "sidenav.client.branch_image_add_success"
                 ),
                 description: getTranslation(response.payload.message),
-                
               });
               onClose();
               console.log(" success:", response);
