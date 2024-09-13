@@ -1,5 +1,6 @@
 import React from "react";
 import {
+  SettingFilled,
   DollarOutlined,
   GlobalOutlined,
   CalendarOutlined,
@@ -16,7 +17,7 @@ import {
   BankOutlined,
   ToolOutlined,
   FolderOutlined,
-  DeploymentUnitOutlined
+  DeploymentUnitOutlined,
 } from "@ant-design/icons";
 import { Menu } from "antd";
 import { Link, useLocation, Routes, Route, Navigate } from "react-router-dom";
@@ -25,6 +26,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { onMobileNavSettingToggle } from "../../../store/slices/themeSlice";
 import { getTranslation } from "../../../lang/translationUtils";
 import Unit from "./units";
+import ServiceSettings from "./service_settings";
 const url = "/settings";
 const MenuItem = ({ icon, path, label }) => {
   const dispatch = useDispatch();
@@ -32,27 +34,46 @@ const MenuItem = ({ icon, path, label }) => {
     <>
       {icon}
       <span>{getTranslation(label)}</span>
-      <Link to={`${url}/${path}`} onClick={() => dispatch(onMobileNavSettingToggle(false))} />
+      <Link
+        to={`${url}/${path}`}
+        onClick={() => dispatch(onMobileNavSettingToggle(false))}
+      />
     </>
   );
 };
 
 const getMenuItems = (user) => {
   const allMenuItems = [
-   
     {
       key: "Unit",
-      label: <MenuItem label={getTranslation("sidenav.settings.Unit")} icon={<FolderOutlined />} path="Unit" />,
-      user_type: [1,2],
-      element: <Unit />
+      label: (
+        <MenuItem
+          label={getTranslation("sidenav.settings.Unit")}
+          icon={<FolderOutlined />}
+          path="Unit"
+        />
+      ),
+      user_type: [1, 2],
+      element: <Unit />,
     },
-    
+    {
+      key: "Service_Settings",
+      label: (
+        <MenuItem
+          label={getTranslation("sidenav.settings.Unit.service")}
+          icon={<SettingOutlined />}
+          path="service_settings"
+        />
+      ),
+      user_type: [1, 2],
+      element: <ServiceSettings />,
+    },
   ];
-  return allMenuItems.filter(elm => elm.user_type.includes(user?.user_type));
+  return allMenuItems.filter((elm) => elm.user_type.includes(user?.user_type));
 };
 
 const SettingOption = () => {
-  const user = useSelector(state => state.auth.user);
+  const user = useSelector((state) => state.auth.user);
   const location = useLocation();
   const locationPath = location.pathname.split("/");
   const currentPath = locationPath[locationPath.length - 1];
@@ -62,14 +83,16 @@ const SettingOption = () => {
 };
 
 const SettingContent = () => {
-  const user = useSelector(state => state.auth.user);
+  const user = useSelector((state) => state.auth.user);
   const menuItems = getMenuItems(user);
   return (
     <Routes>
-      {menuItems.map((elm, index) =>
+      {menuItems.map((elm, index) => (
         <Route path={`${elm.key}`} key={index} element={elm.element} />
+      ))}
+      {menuItems.length === 0 ? null : (
+        <Route path="*" element={<Navigate to={menuItems[0].key} replace />} />
       )}
-      {menuItems.length === 0 ? null : <Route path="*" element={<Navigate to={menuItems[0].key} replace />} />}
     </Routes>
   );
 };

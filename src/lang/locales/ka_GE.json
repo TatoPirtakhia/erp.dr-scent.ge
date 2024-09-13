@@ -471,8 +471,9 @@
   "sidenav.settings.systemInfo.Save": "შეანახვა",
   "sidenav.settings.systemInfo.system_info_updated_successfully": "სისტემის პარამეტრები წარმატებით განახლდა",
   "sidenav.settings.systemInfo.trial_days_limit": "საცდელი პერიოდის ხანგრძლივობა (დღე)",
-
   "sidenav.settings.Unit": "განზომილება",
+  "sidenav.settings.Unit.service": "სერვისის პარამეტრები",
+  "sidenav.settings.Unit.service_edit": "სერვისის რედაქტირება",
   "sidenav.settings.unit.add_Unit": "დამატება",
   "sidenav.settings.unit.table_Unit_name": "სახელი",
   "sidenav.settings.unit.empty": "განზომილება ვერ მოიძებნა",
