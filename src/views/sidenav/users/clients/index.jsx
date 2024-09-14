@@ -617,7 +617,6 @@ const ClientsList = () => {
     setSearchValue(value);
     setFilterData((prev) => ({ ...prev, search: value }));
   };
-  console.log(users);
   return (
     <>
       <CustomHelmet title="sidenav.client.tab" />
@@ -771,6 +770,23 @@ const ClientsList = () => {
                   };
                 })
               );
+              setExpandableData((prevExpandableData) =>
+                prevExpandableData.map((branch) =>
+                  branch.id === data.branch_id
+                    ? {
+                        ...branch,
+                        images: [
+                          ...branch.images,
+                          {
+                            id: data.id,
+                            branch_id: data.branch_id,
+                            image: data.image,
+                          },
+                        ],
+                      }
+                    : branch
+                )
+              );
             }}
             onImageDelete={(deletedImageIds) => {
               setUsers((prevUsers) =>
@@ -782,6 +798,15 @@ const ClientsList = () => {
                       (image) => !deletedImageIds.includes(image.id)
                     ),
                   })),
+                }))
+              );
+
+              setExpandableData((prevExpandableData) =>
+                prevExpandableData.map((branch) => ({
+                  ...branch,
+                  images: branch.images.filter(
+                    (image) => !deletedImageIds.includes(image.id)
+                  ),
                 }))
               );
             }}

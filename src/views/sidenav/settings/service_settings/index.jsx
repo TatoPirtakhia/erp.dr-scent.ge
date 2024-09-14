@@ -1,3 +1,4 @@
+// საბა ჯიაძე 9/12
 import React, { useState, useEffect, useContext } from "react";
 import {
   DeleteOutlined,
@@ -129,16 +130,12 @@ const ServiceSettings = () => {
   };
   const onMultipleDelete = (row) => {
     const selectedIds = selectedRows.map((item) => item.key);
-    console.log(selectedIds);
   };
   const handleEdit = (row) => {
     setSelectedItemData(row);
     setIsEditing(true);
   };
-  const handleDeleteModal = (row) => {
-    console.log(row);
-  };
-  console.log(textColor);
+  const handleDeleteModal = (row) => {};
   return (
     <>
       <CustomHelmet title="sidenav.settings.Unit" />

@@ -60,6 +60,7 @@ const ClientCard = ({
       icon: <EnvironmentOutlined />,
     },
   ];
+  console.log(client);
 
   return (
     <Card
@@ -108,7 +109,6 @@ const ClientCard = ({
           {client.salesman.first_name}
         </p>
       ) : null}
-
       {client.note ? (
         <Meta
           className="mt-2"
