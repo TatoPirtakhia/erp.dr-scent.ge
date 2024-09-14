@@ -343,30 +343,27 @@ const ClientsList = () => {
 
   const activeOrBlock = (user) => {
     mb({
-      okText: `${
-        user
+      okText: `${user
           ? user.is_active
             ? getTranslation("sidenav.client.blockWithSwitchButton")
             : getTranslation("sidenav.client.unBlockWithSwitchButton")
           : ""
-      }`,
-      title: `${
-        user
+        }`,
+      title: `${user
           ? user.is_active
             ? getTranslation("sidenav.client.blockWithSwitchTitle")
             : getTranslation("sidenav.client.unBlockWithSwitchTitle")
           : ""
-      }`,
+        }`,
       cancelText: getTranslation("sidenav.client.Cancel"),
       text: (
         <>
-          {` ${
-            user
+          {` ${user
               ? user.is_active
                 ? getTranslation("sidenav.client.blockyWithSwitchText")
                 : getTranslation("sidenav.client.unBlockyWithSwitchText")
               : ""
-          }`}
+            }`}
           <strong
             style={{
               color: `${user ? (user.is_active ? "#FF6B72" : "green") : ""}`,
@@ -536,7 +533,6 @@ const ClientsList = () => {
       />
     );
   };
-  console.log(users);
   const tableColumns = [
     {
       title: getTranslation("sidenav.client.tableUser"),
@@ -755,16 +751,16 @@ const ClientsList = () => {
                     expandableData: user.expandableData.map((branch) =>
                       branch.id === data.branch_id
                         ? {
-                            ...branch,
-                            images: [
-                              ...branch.images,
-                              {
-                                id: data.id,
-                                branch_id: data.branch_id,
-                                image: data.image,
-                              },
-                            ],
-                          }
+                          ...branch,
+                          images: [
+                            ...branch.images,
+                            {
+                              id: data.id,
+                              branch_id: data.branch_id,
+                              image: data.image,
+                            },
+                          ],
+                        }
                         : branch
                     ),
                   };
@@ -774,16 +770,16 @@ const ClientsList = () => {
                 prevExpandableData.map((branch) =>
                   branch.id === data.branch_id
                     ? {
-                        ...branch,
-                        images: [
-                          ...branch.images,
-                          {
-                            id: data.id,
-                            branch_id: data.branch_id,
-                            image: data.image,
-                          },
-                        ],
-                      }
+                      ...branch,
+                      images: [
+                        ...branch.images,
+                        {
+                          id: data.id,
+                          branch_id: data.branch_id,
+                          image: data.image,
+                        },
+                      ],
+                    }
                     : branch
                 )
               );
@@ -864,15 +860,16 @@ const ClientsList = () => {
                 prev.map((elm) =>
                   elm.id === branch.expandableData.user_id
                     ? {
-                        ...elm,
-                        expandableData: [branch, ...elm.expandableData],
-                      }
+                      ...elm,
+                      expandableData: [branch, ...elm.expandableData],
+                    }
                     : elm
                 )
               );
             }}
           />
         )}
+        
         {!setMobileAddressOpen ? null : (
           <AddressList
             clientId={clientId}
@@ -881,7 +878,7 @@ const ClientsList = () => {
             onViewLocation={onViewLocation}
             open={setMobileAddressOpen}
             close={() => setSetMobileAddressOpen(false)}
-            onSubmit={(branch) => {}}
+            onSubmit={(branch) => { }}
           />
         )}
 
@@ -893,7 +890,7 @@ const ClientsList = () => {
             visible={LocationVisible}
             enableNewPin={false}
             close={() => setLocationVisible(false)}
-            onSubmit={() => {}}
+            onSubmit={() => { }}
           />
         )}
       </Card>

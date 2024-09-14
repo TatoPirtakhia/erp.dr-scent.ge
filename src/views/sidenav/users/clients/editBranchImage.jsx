@@ -38,12 +38,6 @@ const EditBranchImage = (props) => {
         )
           .then((response) => {
             if (!response.error) {
-              console.log({
-                user_id: data.user_id,
-                branch_id: data.id,
-                id: response.payload.id,
-                image: response.payload.image,
-              });
               onImageEdit({
                 user_id: data.user_id,
                 branch_id: data.id,
@@ -51,7 +45,6 @@ const EditBranchImage = (props) => {
                 image: response.payload.image,
               });
               notification.success({
-                message: getTranslation("Done!"),
                 message: getTranslation("Done!"),
                 description: getTranslation(response.payload.message),
               });
@@ -125,7 +118,6 @@ const EditBranchImage = (props) => {
   };
   const handleImageRemoval = () => {
     try {
-      console.log({ imageIds, user_id: data.user_id });
       dispatch(deleteBranchImage({ imageIds, user_id: data.user_id })).then(
         (response) => {
           if (!response.error) {
@@ -142,7 +134,6 @@ const EditBranchImage = (props) => {
       console.log("Image could not be deleted", error);
     }
   };
-  console.log(data);
   return (
     <>
       <Upload
@@ -159,14 +150,14 @@ const EditBranchImage = (props) => {
       >
         {fileList.length < 20 && getTranslation("sidenav.product.upload")}
       </Upload>
-      <Flex gap={10} justify="flex-end">
+      <div className="flex justify-end gap-4 mt-4">
         <Button onClick={onClose} type="">
-          გაუქმება
+          {getTranslation("sidenav.service.Cancel")}
         </Button>
         <Button type="primary" onClick={handleSubmit}>
-          ჩამახსოვრება
+          {getTranslation("sidenav.service.save")}
         </Button>
-      </Flex>
+      </div>
     </>
   );
 };

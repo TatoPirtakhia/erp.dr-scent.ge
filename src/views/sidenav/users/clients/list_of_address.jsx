@@ -10,6 +10,7 @@ import { getTranslation } from "../../../../lang/translationUtils";
 import dayjs from "dayjs";
 import { useSelector } from "react-redux";
 import { API_BASE_URL } from "../../../../constants/ApiConstant";
+import { NoImage } from "../../../../assets/svg/icon";
 const CardDropdown = ({ items }) => {
   return (
     <Dropdown menu={{ items }} trigger={["click"]} placement="bottomRight">
@@ -27,7 +28,6 @@ const CardDropdown = ({ items }) => {
 const AddressList = (props) => {
   const settings = useSelector((state) => state.systemInfo.settings);
   const { open, close, data, onEdit, onViewLocation, clientId } = props;
-  console.log(data);
   const importExport = (item) => {
     return [
       {
@@ -38,7 +38,6 @@ const AddressList = (props) => {
       },
     ];
   };
-  console.log(data);
   return (
     <>
       <Drawer
@@ -56,15 +55,16 @@ const AddressList = (props) => {
               className="client-card"
               style={{ marginBottom: 16 }}
               cover={
-                <div className="mt-3  rounded-[12px]">
-                  <Carousel
-                    effect="scrollx"
-                    dotPosition="bottom"
-                    className="min-h-[170px]"
-                    autoplay
-                  >
-                    {item.images.length > 0 &&
-                      item.images.map((branch, index) => (
+                item.images.length > 0 ?
+                  <div className="mt-3  rounded-[12px]">
+                    <Carousel
+                      effect="scrollx"
+                      dotPosition="bottom"
+                      className="min-h-[170px]"
+                      autoplay
+                    >
+
+                      {item.images.map((branch, index) => (
                         <div key={index}>
                           <img
                             alt={`slider-image-${index}`}
@@ -77,8 +77,8 @@ const AddressList = (props) => {
                           />
                         </div>
                       ))}
-                  </Carousel>
-                </div>
+                    </Carousel>
+                  </div> : <NoImage height={170} width={370} />
               }
               extra={<CardDropdown items={importExport(item)} />}
             >

@@ -60,8 +60,6 @@ const ClientCard = ({
       icon: <EnvironmentOutlined />,
     },
   ];
-  console.log(client);
-
   return (
     <Card
       title={client.brand_name ? client.brand_name : client.first_name}

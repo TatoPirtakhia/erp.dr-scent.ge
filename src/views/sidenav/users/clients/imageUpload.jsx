@@ -37,7 +37,6 @@ const ImageUpload = (props) => {
                 description: getTranslation(response.payload.message),
               });
               onClose();
-              console.log(" success:", response);
             } else {
               console.error(" failed:", response.error);
             }
