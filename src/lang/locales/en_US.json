@@ -462,7 +462,9 @@
   "sidenav.settings.systemInfo.trial_days_limit": "Trial Days Limit",
 
   "sidenav.settings.Unit": "Unit",
+  "sidenav.settings.Unit.service": "Service Settings",
   "sidenav.settings.unit.add_Unit": "Add",
+  "sidenav.settings.Unit.service_edit": "Edit Service",
   "sidenav.settings.unit.table_Unit_name": "Name",
   "sidenav.settings.unit.empty": "No Unit Found",
   "sidenav.settings.unit.Cancel": "Cancel",
