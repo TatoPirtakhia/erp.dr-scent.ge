@@ -83,30 +83,17 @@ const AddServiceSettings = (props) => {
             onChange={(value) => setDay(value)}
           />
         </div>
-        <div>
-          <div className="relative">
-            {/* <Progress
-              percent={day}
-              strokeColor={color}
-              showInfo
-              size={[, 22]}
-              percentPosition={{ align: "end", type: "inner" }}
-              format={() => `${day} დღე`}
-            /> */}
-            <Progress
-              percent={(day / 30) * 100}
-              strokeColor={color}
-              size={[, 25]}
-              // არ მუშაობს რაღატომმმ
-              percentPosition={{ align: "end", type: "inner" }}
-              format={() => ""}
-            />
-            <div
-              className="absolute top-0"
-              style={{ left: `${(day / 52) * 100}%` }}
-            >{`${day} დღე`}</div>
-          </div>
-        </div>
+          <Progress
+            percent={(100 / 30) * day}
+            strokeColor={color}
+            showInfo
+            format={() => <span className='text-[#000] font-bold font-noto_georgian mr-1 p-0' >{day} {getTranslation("day")}</span> }
+            percentPosition={{
+              align: 'end',
+              type: 'inner',
+            }}
+            size={[, 22]}
+          />
         <div className="flex flex-1 justify-end gap-3">
           <Button onClick={() => onClose()}>
             {getTranslation("sidenav.product.Cancel")}
