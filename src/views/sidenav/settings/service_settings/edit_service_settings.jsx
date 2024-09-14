@@ -1,3 +1,4 @@
+// საბა ჯიაძე 9/12
 import React from "react";
 import { Form, Input, Button, Modal } from "antd";
 import { getTranslation } from "../../../../lang/translationUtils";
@@ -6,7 +7,6 @@ const EditServiceSettings = (props) => {
   const { onClose, data } = props;
   const [form] = Form.useForm();
   const handleSave = () => {
-    console.log("Editing work");
   };
   return (
     <Modal

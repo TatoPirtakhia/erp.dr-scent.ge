@@ -27,6 +27,7 @@ const CardDropdown = ({ items }) => {
 const AddressList = (props) => {
   const settings = useSelector((state) => state.systemInfo.settings);
   const { open, close, data, onEdit, onViewLocation, clientId } = props;
+  console.log(data);
   const importExport = (item) => {
     return [
       {
